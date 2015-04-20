@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,11 +16,6 @@ public class TestProject {
 	@Before
 	public void setUpStreams() {
 		System.setOut(new PrintStream(outContent));
-	}
-
-	@After
-	public void cleanUpStreams() {
-		System.setOut(null);
 	}
 
 	@Test
@@ -42,7 +36,7 @@ public class TestProject {
 		assertEquals(project.getActivities().get(0).getTitle(),
 				"Project Leader");	    
 	    
-		assertEquals("The project has been created", outContent.toString());
+		assertEquals("The project has been created\n", outContent.toString());
 	}
 
 }

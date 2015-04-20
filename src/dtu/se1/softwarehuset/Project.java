@@ -3,7 +3,6 @@ package dtu.se1.softwarehuset;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class Project {
 	private String title;
@@ -20,8 +19,9 @@ public class Project {
 		createActivity("Project Leader", 0, startDate, null);
 	}
 	
-	public void createActivity(String title, int expectedWorkHours, Calendar startDate, Calendar endDate) {
+	public Activity createActivity(String title, int expectedWorkHours, Calendar startDate, Calendar endDate) {
 		activityList.add(new Activity(title, expectedWorkHours, startDate, endDate));
+		return activityList.get(activityList.size()-1);
 	}
 	
 	public List<Activity> getActivities() {
