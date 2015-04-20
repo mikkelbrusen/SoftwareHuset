@@ -44,5 +44,25 @@ public class TestProject {
 	    
 		assertEquals("The project has been created", outContent.toString());
 	}
+	
+	@Test
+	public void testCreateExistingProject() {
+		//Step 1, create the first
+		Master master = new Master();
+		Calendar cal = new GregorianCalendar(2015, Calendar.JANUARY, 10);
+
+		master.createProject("first", cal);
+		Project project = master.getProjects().get(0);
+		
+		assertEquals(1, master.getProjects().size());
+		assertEquals("first", project.getTitle());
+		assertEquals(cal, project.getStartDate());
+		
+		//Step 2, create a second project
+		master.createProject("first", cal);
+		
+		assertEquals(1, master.getProjects().get(0));
+		assertEquals("The project already exists", outContent.toString());
+	}
 
 }
