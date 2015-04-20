@@ -12,10 +12,11 @@ public class Master {
 		projectList = new ArrayList<Project>();
 		developerList = new ArrayList<>();
 	}
-	
+
 	public Project createProject(String title, Calendar startDate) {
-		projectList.add(new Project(title, startDate));
-		System.out.print("The project has been created\n");
+		Project project = new Project(title, startDate);
+		projectList.add(project);
+
 		return projectList.get(projectList.size()-1);
 	}
 	
