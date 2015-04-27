@@ -8,9 +8,10 @@ public class Project {
 	private String title;
 	private Calendar startDate; 
 	private List<Activity> activityList;
+	private Master m;
 	
 	
-	public Project(String title, Calendar startDate) {
+	public Project(Master m, String title, Calendar startDate) {
 		activityList = new ArrayList<Activity>();
 		
 		this.setTitle(title);
@@ -42,6 +43,14 @@ public class Project {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public void becomeProjectLeader() throws ActivityStaffException  {
+		Activity pLeader = getActivities().get(0);
+		if (pLeader.getStaff().size() != 0){
+			throw new ActivityStaffException("Project leader is already assigned");
+		}
+		pLeader.addStaff(m.getDevById(i));
 	}
 
 }

@@ -12,7 +12,7 @@ public class Activity {
 	private Calendar startDate;
 	private Calendar endDate;
 	private Map<Developer, Integer> registeredHours;
-	private List<Developer> manning;
+	private List<Developer> staff;
 
 	public Activity(String title, int expectedWorkHours, Calendar startDate,
 			Calendar endDate) {
@@ -22,7 +22,7 @@ public class Activity {
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
 		registeredHours = new HashMap<Developer, Integer>();
-		manning = new ArrayList<Developer>();
+		staff = new ArrayList<Developer>();
 	}
 	
 	public void registerHours(Developer d, int hours) {
@@ -72,6 +72,17 @@ public class Activity {
 
 	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
+	}
+
+	public void addStaff(Developer d) throws ActivityStaffException {
+		if (staff.contains(d)){
+			throw new ActivityStaffException("Developer is already assinged");
+		}
+		staff.add(d);
+	}
+
+	public List<Developer> getStaff() {
+		return staff;
 	}
 
 }

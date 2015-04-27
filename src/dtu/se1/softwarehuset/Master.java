@@ -22,13 +22,16 @@ public class Master {
 		if (getLoginId() != 0) {
 			throw new AccessDeniedException("You are not an administrator");
 		}
-		Project project = new Project(title, startDate);
+		Project project = new Project(this, title, startDate);
 		projectList.add(project);
 
 		return projectList.get(projectList.size()-1);
 	}
 	
-	public Developer createDev() {
+	public Developer createDev() throws AccessDeniedException {
+		if (getLoginId() != 0){
+			throw new AccessDeniedException("You are not an administrator");
+		}
 		developerList.add(new Developer());
 		return developerList.get(developerList.size()-1);	
 	}
@@ -55,6 +58,15 @@ public class Master {
 	
 	public Integer getLoginId() {
 		return loginId;
+	}
+	
+	public Developer getDevById(int id) {
+		for (Developer dev : developerList){
+			if (dev.getId() == id){
+				return dev;
+			}
+		}
+		return null;
 	}
 	
 }

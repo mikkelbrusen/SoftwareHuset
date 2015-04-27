@@ -6,14 +6,14 @@ import org.junit.Test;
 public class TestDeveloper  extends SampleDataSetup{
 	
 	@Test
-	public void testCreateDeveloper() {
+	public void testCreateDeveloper() throws Exception {
 		
 		Developer d = m.createDev();
 		assertEquals(1, m.getDevs().size());
 	}
 	
 	@Test
-	public void testRegisterHours() {
+	public void testRegisterHours() throws Exception {
 		
 		Developer d = m.createDev();
 		
@@ -24,7 +24,7 @@ public class TestDeveloper  extends SampleDataSetup{
 	}
 	
 	@Test
-	public void testRegisterHoursMultiple() {		
+	public void testRegisterHoursMultiple() throws Exception {		
 		Developer d = m.createDev();
 
 		a.registerHours(d, 10);
@@ -35,7 +35,7 @@ public class TestDeveloper  extends SampleDataSetup{
 	}
 	
 	@Test
-	public void testRegisterHoursMultipleDevs() {
+	public void testRegisterHoursMultipleDevs() throws Exception {
 		Developer d1 = m.createDev();
 		Developer d2 = m.createDev();
 		
