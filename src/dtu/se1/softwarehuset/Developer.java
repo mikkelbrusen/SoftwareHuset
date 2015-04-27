@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Developer {
 	
-	private static int index = 1;
-	private int id;
+	private static int index = 0;
+	protected int id;
 	private List<Activity> activityList;
 	
 	public Developer() {

@@ -2,29 +2,23 @@ package dtu.se1.softwarehuset;
 
 import static org.junit.Assert.*;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.junit.Test;
 
-public class TestProject {
-
+public class TestProject extends SampleDataSetup{
+	
 	@Test
-	public void testCreateProject() {
-		Master master = new Master();
-		Calendar cal = new GregorianCalendar(2015, Calendar.JANUARY, 10);
+	public void testCreateActivity() {
+	
+		int activitySize = p.getActivities().size();
+		Activity a = p.createActivity("activity", 10, start, end);
+		
+		assertEquals(activitySize+1, p.getActivities().size());
 
-		Project project = master.createProject("first", cal);
-
-		assertEquals(1, master.getProjects().size());
-
-		assertEquals("first", project.getTitle());
-		assertEquals(cal, project.getStartDate());
-
-		assertEquals(project.getActivities().size(), 1);
-		assertEquals(project.getActivities().get(0).getTitle(),
-				"Project Leader");	    
-	    
+		assertEquals("activity", a.getTitle());
+		assertEquals(10, a.getExpectedWorkHours());
+		assertEquals(start, a.getStartDate());
+		assertEquals(end, a.getEndDate());
+		
 	}
-
+	
 }

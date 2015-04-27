@@ -1,7 +1,9 @@
 package dtu.se1.softwarehuset;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Activity {
@@ -10,6 +12,7 @@ public class Activity {
 	private Calendar startDate;
 	private Calendar endDate;
 	private Map<Developer, Integer> registeredHours;
+	private List<Developer> manning;
 
 	public Activity(String title, int expectedWorkHours, Calendar startDate,
 			Calendar endDate) {
@@ -19,6 +22,7 @@ public class Activity {
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
 		registeredHours = new HashMap<Developer, Integer>();
+		manning = new ArrayList<Developer>();
 	}
 	
 	public void registerHours(Developer d, int hours) {

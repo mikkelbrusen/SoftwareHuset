@@ -10,7 +10,6 @@ public class TestDeveloper  extends SampleDataSetup{
 		
 		Developer d = m.createDev();
 		assertEquals(1, m.getDevs().size());
-		assertEquals(1, d.getId());
 	}
 	
 	@Test
@@ -33,6 +32,18 @@ public class TestDeveloper  extends SampleDataSetup{
 		
 		assertEquals(15, d.getRegisteredHours());
 		assertEquals(15, a.getRegisteredHours());
+	}
+	
+	@Test
+	public void testRegisterHoursMultipleDevs() {
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		
+		a.registerHours(d1, 10);
+		a.registerHours(d2, 10);
+		
+		assertEquals(20, a.getRegisteredHours());
+		
 	}
 
 }
