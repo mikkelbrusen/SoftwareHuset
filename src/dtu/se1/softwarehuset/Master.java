@@ -10,7 +10,7 @@ public class Master {
 	
 	public Master() {
 		projectList = new ArrayList<Project>();
-		developerList = new ArrayList<>();
+		developerList = new ArrayList<Developer>();
 	}
 
 	public Project createProject(String title, Calendar startDate) {
