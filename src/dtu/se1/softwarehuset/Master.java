@@ -68,5 +68,14 @@ public class Master {
 		}
 		return null;
 	}
+
+	public Project getProjectById(int id) {
+		for (Project p : projectList){
+			if (p.getId() == id){
+				return p;
+			}
+		}
+		return null;
+	}
 	
 }

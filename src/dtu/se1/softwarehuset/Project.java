@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Project {
+	private static int index = 1;
+	private int id;
 	private String title;
 	private Calendar startDate; 
 	private List<Activity> activityList;
 	private Master m;
 	
 	public Project(Master m, String title, Calendar startDate) {
+		this.id += Project.index++;
 		activityList = new ArrayList<Activity>();
 		
 		this.setTitle(title);
@@ -57,6 +60,10 @@ public class Project {
 			throw new ActivityStaffException("Project leader is already assigned");
 		}
 		pLeader.addStaff(m.getDevById(m.getLoginId()));
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }
