@@ -2,6 +2,7 @@ package dtu.se1.softwarehuset;
 
 import static org.junit.Assert.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -42,4 +43,24 @@ public class TestMaster{
 		}
 	}
 	
+	@Test
+	public void testCreateDeveloper() throws AccessDeniedException {
+		Master m = new Master();
+		m.login(m.getAdmin());
+		Developer d = m.createDev();
+		
+		assertEquals(1, m.getDevs().size());
+		assertEquals(m.getDevById(23), null);
+	}
+	
+	@Test
+	public void testCreateDeveloperNoLogin() throws AccessDeniedException {
+		Master m = new Master();
+		try {
+			Developer d = m.createDev();
+			fail("Developer should not have been created!");
+		} catch (AccessDeniedException e) {
+			assertEquals("You are not an administrator", e.getMessage());
+		}
+	}
 }
