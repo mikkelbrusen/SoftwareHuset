@@ -20,7 +20,7 @@ public class Project {
 	}
 	
 	public Activity createActivity(String title, int expectedWorkHours, Calendar startDate, Calendar endDate) {
-		activityList.add(new Activity(title, expectedWorkHours, startDate, endDate));
+		activityList.add(new Activity(m, this, title, expectedWorkHours, startDate, endDate));
 		return activityList.get(activityList.size()-1);
 	}
 	
@@ -43,10 +43,16 @@ public class Project {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
+	public Developer getProjectLeader() {
+		if (activityList.get(0).getStaff().size() == 0){
+			return null;
+		}
+		return activityList.get(0).getStaff().get(0);
+	}
+	
 	public void becomeProjectLeader() throws ActivityStaffException  {
 		Activity pLeader = getActivities().get(0);
-		int i = m.getLoginId();
 		if (pLeader.getStaff().size() != 0){
 			throw new ActivityStaffException("Project leader is already assigned");
 		}

@@ -13,14 +13,18 @@ public class Activity {
 	private Calendar endDate;
 	private Map<Developer, Integer> registeredHours;
 	private List<Developer> staff;
+	private Project p;
+	private Master m;
 
-	public Activity(String title, int expectedWorkHours, Calendar startDate,
+	public Activity(Master m, Project p, String title, int expectedWorkHours, Calendar startDate,
 			Calendar endDate) {
 
 		this.setTitle(title);
 		this.setExpectedWorkHours(expectedWorkHours);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		this.m = m;
+		this.p = p;
 		registeredHours = new HashMap<Developer, Integer>();
 		staff = new ArrayList<Developer>();
 	}
@@ -75,10 +79,27 @@ public class Activity {
 	}
 
 	public void addStaff(Developer d) throws ActivityStaffException {
-		if (staff.contains(d)){
+		if (alreadyAssigned(d)){
 			throw new ActivityStaffException("Developer is already assinged");
+		} else if (projectLeaderIsEmpty()) {
+			staff.add(d);
+		} else if (!isProjectLeader()) {
+			throw new ActivityStaffException("You are not the leader of this project");
+		} else {
+			staff.add(d);
 		}
-		staff.add(d);
+	}
+
+	private boolean alreadyAssigned(Developer d) {
+		return staff.contains(d);
+	}
+
+	private boolean isProjectLeader() {
+		return m.getDevById(m.getLoginId()).equals(p.getProjectLeader());
+	}
+
+	private boolean projectLeaderIsEmpty() {
+		return title.equals("Project Leader") && staff.size() == 0;
 	}
 
 	public List<Developer> getStaff() {
