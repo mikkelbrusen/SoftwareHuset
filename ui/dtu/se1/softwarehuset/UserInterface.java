@@ -126,7 +126,7 @@ public class UserInterface {
 		String[] arr = str.split("/");
 		return new GregorianCalendar(
 					Integer.parseInt(arr[0]),
-					Integer.parseInt(arr[1])+1,
+					Integer.parseInt(arr[1])-1,
 					Integer.parseInt(arr[2])
 				);
 	}
@@ -148,6 +148,10 @@ public class UserInterface {
 		System.out.println("Enter \"0\" to return to main menu");
 		System.out.println("Enter project ID, to manage project");
 		int projectId = Integer.parseInt(sc.nextLine());
+		
+		if (projectId == 0) {
+			mainMenu();
+		}
 		
 		Project p = m.getProjectById(projectId);
 		while (!m.getProjects().contains(p)) {
