@@ -10,13 +10,12 @@ public class Project {
 	private List<Activity> activityList;
 	private Master m;
 	
-	
 	public Project(Master m, String title, Calendar startDate) {
 		activityList = new ArrayList<Activity>();
 		
 		this.setTitle(title);
 		this.setStartDate(startDate);		
-		
+		this.m = m;
 		createActivity("Project Leader", 0, startDate, null);
 	}
 	
@@ -47,10 +46,11 @@ public class Project {
 
 	public void becomeProjectLeader() throws ActivityStaffException  {
 		Activity pLeader = getActivities().get(0);
+		int i = m.getLoginId();
 		if (pLeader.getStaff().size() != 0){
 			throw new ActivityStaffException("Project leader is already assigned");
 		}
-		pLeader.addStaff(m.getDevById(i));
+		pLeader.addStaff(m.getDevById(m.getLoginId()));
 	}
 
 }

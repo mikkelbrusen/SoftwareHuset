@@ -29,7 +29,5 @@ public class Developer {
 	public int getId() {
 		return id;
 	}
-	
-	
 
 }

@@ -18,7 +18,7 @@ public class TestActivity extends SampleDataSetup{
 		Developer d2 = m.createDev();
 		m.logout();
 		m.login(d1);
-		p.becomeProjectLeader(1);
+		p.becomeProjectLeader();
 		
 		a.addStaff(d2);
 		
