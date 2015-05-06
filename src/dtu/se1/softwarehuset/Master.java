@@ -60,6 +60,13 @@ public class Master {
 		return loginId;
 	}
 	
+	public Developer getLogin() {
+		if (loginId == 0)
+			return admin;
+		
+		return getDevById(loginId);
+	}
+	
 	public Developer getDevById(int id) {
 		for (Developer dev : developerList){
 			if (dev.getId() == id){

@@ -2,6 +2,7 @@ package dtu.se1.softwarehuset;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -9,23 +10,26 @@ public class UserInterface {
 
 	private Scanner sc;
 	private Master m;
+	
+	private static final String REGEX_TITLE = "^(\\w|\\d){1,}(\\w|\\d| ){1,}$";
+	private static final String REGEX_DATE = "^\\d{4}/\\d{2}/\\d{2}$";
 
 	public static void main(String[] args) {
 		new UserInterface();
 	}
 
 	public UserInterface() {
-		sc = new Scanner(System.in);
 		m = new Master();
 		login();
 		mainMenu();
+		
 	}
 
 	private void login() {
 		System.out.println("To close the program, enter id \"-1\"");
 		System.out.println("Enter your ID:");
 		Developer loginDev;
-		int id = Integer.parseInt(sc.nextLine());
+		int id = userInputInt();
 
 		if (id == 0) {
 			loginDev = m.getAdmin();
@@ -38,7 +42,7 @@ public class UserInterface {
 				closeApp();
 			}
 			System.out.println("User does not exist.\nEnter another ID");
-			id = Integer.parseInt(sc.nextLine());
+			id = userInputInt();
 
 			if (id == 0) {
 				loginDev = m.getAdmin();
@@ -59,7 +63,7 @@ public class UserInterface {
 		System.out.println("Logout - 4");
 		System.out.println("Close application - 5");
 		System.out.println("-----");
-		int choice = Integer.parseInt(sc.nextLine());
+		int choice = userInputInt();
 		switch (choice) {
 		case (1):
 			accessProjects();
@@ -84,51 +88,47 @@ public class UserInterface {
 	}
 
 	private void createProject() {
+		Developer user = m.getLogin();
+		
+		if (user != m.getAdmin()) {
+			System.out.println("Access denied!\nReturning to main menu");
+			mainMenu();
+		}
+		
 		System.out.println("Creating new project..");
 		System.out.println("Enter project title:");
-		String title = sc.nextLine();
-		while (!validateTitle(title)) {
-			System.out.println("Title is not valid\nTry again:");
-			title = sc.nextLine();
-		}
+		String title = userInputString(REGEX_TITLE);
+
 		System.out.println("Enter start date for the project");
 		System.out.println("Format: \"yyyy/mm/dd\"");
-		String date = sc.nextLine();
-		while (!validateDate(date)) {
-			System.out.println("Date is not valid\nTry again:");
-			date = sc.nextLine();
-		};
-		
+		String date = userInputString(REGEX_DATE);
+
 		Calendar startDate = createCalendarFromString(date);
-		
+
 		try {
 			Project p = m.createProject(title, startDate);
+			String dateString = new Date(startDate.getTimeInMillis()).toString();
+			
 			
 			System.out.println("Success!");
-			System.out.println("Created project \""+p.getTitle()+"\", with id "+p.getId());
+			System.out.println("Created project \"" + p.getTitle()
+					+ "\", with id " + p.getId());
+			System.out.println("and start date at: "+dateString);
 		} catch (AccessDeniedException e) {
 			e.printStackTrace();
 		}
-		
-		mainMenu();		
+
+		mainMenu();
 	}
 
-	private boolean validateTitle(String title) {
-		return title.matches("^(\\w|\\d){1,}(\\w|\\d| ){1,}$");
-	}
-
-	private boolean validateDate(String date) {
-		String regExp = "^\\d{4}/\\d{2}/\\d{2}$";
-		return date.matches(regExp);
-	}
-	
-	public Calendar createCalendarFromString(String str) {
+	private Calendar createCalendarFromString(String str) {
 		String[] arr = str.split("/");
-		return new GregorianCalendar(
-					Integer.parseInt(arr[0]),
-					Integer.parseInt(arr[1])-1,
-					Integer.parseInt(arr[2])
-				);
+
+		int year = Integer.parseInt(arr[0]);
+		int month = Integer.parseInt(arr[1]) - 1; // Offset for zero-indexing
+		int day = Integer.parseInt(arr[2]);
+
+		return new GregorianCalendar(year, month, day);
 	}
 
 	private void accessProjects() {
@@ -141,31 +141,117 @@ public class UserInterface {
 		}
 		System.out.println("--");
 		for (Project p : m.getProjects()) {
-			System.out.println("\""+p.getTitle() + "\" - Id: " + p.getId());
+			System.out.println("\"" + p.getTitle() + "\" - Id: " + p.getId());
 		}
 		System.out.println("--");
-		
+
 		System.out.println("Enter \"0\" to return to main menu");
 		System.out.println("Enter project ID, to manage project");
-		int projectId = Integer.parseInt(sc.nextLine());
-		
+		int projectId = userInputInt();
+
 		if (projectId == 0) {
 			mainMenu();
 		}
-		
+
 		Project p = m.getProjectById(projectId);
 		while (!m.getProjects().contains(p)) {
 			System.out.println("Project does not exist\nTry again");
-			p = m.getProjectById(Integer.parseInt(sc.nextLine()));
+			p = m.getProjectById(userInputInt());
+		}
+
+		manageProject(p);
+	}
+
+	private void manageProject(Project p) {
+
+		System.out.println("Accessing Project \"" + p.getTitle() + "\"..");
+
+		System.out.println("Options:");
+		System.out.println("Create activity - 1");
+		System.out.println("Return to main menu -2");
+
+		int choice = userInputInt();
+		switch (choice) {
+		case(1):
+			createActivity(p);
+			break;
+		case(2):
+			mainMenu();
+			break;
+		default:
+			System.out.println("Invalid choice:\nReturning to main menu");
+			mainMenu();
 		}
 		
-		System.out.println("Accessing Project \""+p.getTitle()+"\"");
-//		manageProject();
+	}
+
+	private void createActivity(Project p) {
+		
+		if (m.getLogin() != p.getProjectLeader()) {
+			System.out.println("Access denied!\nOnly the project leader may create activities!");
+			System.out.println("Returning to main menu");
+			mainMenu();
+		}
+		
+		System.out.println("Creating new activity for project \""+p.getTitle()+"\":");
+		
+		System.out.println("Enter title:");
+		String title = userInputString(REGEX_TITLE);
+		
+		System.out.println("Enter expected work hours");
+		int ewh = userInputInt();
+
+		System.out.println("Enter start date:");
+		System.out.println("Format: \"yyyy/mm/dd\"");
+		Calendar startDate = createCalendarFromString(userInputString(REGEX_DATE));
+
+		System.out.println("Enter end date:");
+		System.out.println("Format: \"yyyy/mm/dd\"");
+		Calendar endDate = createCalendarFromString(userInputString(REGEX_DATE));
+		
+		Activity a = p.createActivity(title, ewh, startDate, endDate);
+		
+		System.out.println("---\nSuccess!");
+		System.out.println("Created activity \""+a.getTitle()+"\"");
+		System.out.println("Start date: "+new Date(startDate.getTimeInMillis()).toString());
+		System.out.println("End date: "+new Date(endDate.getTimeInMillis()).toString());
+		System.out.println("---");
+		
+		mainMenu();
 	}
 
 	private void closeApp() {
 		System.out.println("Closing Aplication...");
 		System.exit(0);
+	}
+
+	private int userInputInt() {
+		sc = new Scanner(System.in);
+		String inp = sc.nextLine();
+		int ret;
+		try {
+			ret = Integer.parseInt(inp);
+			return ret;
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input. Try again:");
+			return userInputInt();
+		}
+
+	}
+
+	private String userInputString(String regex) {
+		sc = new Scanner(System.in);
+		String str = sc.nextLine();
+		if (regex == null)
+			return str;
+
+		if (str.matches(regex)) {
+			return str;
+		} else {
+			System.out.println("Invalid input. Try again:");
+			return userInputString(regex);
+		}
+
 	}
 
 }

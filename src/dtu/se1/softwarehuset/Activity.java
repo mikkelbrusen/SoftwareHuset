@@ -1,5 +1,6 @@
 package dtu.se1.softwarehuset;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -18,6 +19,10 @@ public class Activity {
 
 	public Activity(Master m, Project p, String title, int expectedWorkHours, Calendar startDate,
 			Calendar endDate) {
+		
+		if (expectedWorkHours < 0) {
+			throw new InvalidParameterException("Expexted work hours must be non-negative");
+		}
 
 		this.setTitle(title);
 		this.setExpectedWorkHours(expectedWorkHours);
