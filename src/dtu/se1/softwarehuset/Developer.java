@@ -17,7 +17,7 @@ public class Developer {
 	public int getRegisteredHours() {
 		int hours = 0;
 		for (Activity a: activityList) {
-			hours += a.getRegisteredHours();
+			hours += a.getDevRegisteredHours(this);
 		}
 		return hours;
 	}

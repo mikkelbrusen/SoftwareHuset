@@ -4,8 +4,10 @@ package dtu.se1.softwarehuset;
 import static org.junit.Assert.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,26 @@ public class TestActivity extends SampleDataSetup{
 		}
 		
 		assertEquals(1,a.getStaff().size());
+	}
+	
+	@Test
+	public void testAddStaffNotAvaible() throws AccessDeniedException, ActivityStaffException {
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		
+		List<Activity> activities = new ArrayList<Activity>();
+		for (int i = 1; i <= 10; i++){
+			activities.add(p.createActivity("activity"+i, 10, start, end));
+		}
+		
+		for (int i = 0; i < activities.size()-1; i++){
+			activities.get(i).addStaff(d2);
+		}
+		
+		// NOT DONE BITCH
 	}
 	
 }

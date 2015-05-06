@@ -37,7 +37,6 @@ public class Activity {
 	public void registerHours(Developer d, int hours) {
 		if (!registeredHours.containsKey(d)) {
 			registeredHours.put(d, hours);
-			d.registerActivity(this);
 		} else {
 			registeredHours.put(d, registeredHours.get(d) + hours);
 		}
@@ -49,6 +48,10 @@ public class Activity {
 			hours += i;
 		}
 		return hours;
+	}
+	
+	public int getDevRegisteredHours(Developer d) {
+		return registeredHours.get(d);
 	}
 	
 	public String getTitle() {
@@ -92,6 +95,7 @@ public class Activity {
 			throw new ActivityStaffException("You are not the leader of this project");
 		} else {
 			staff.add(d);
+			d.registerActivity(this);
 		}
 	}
 

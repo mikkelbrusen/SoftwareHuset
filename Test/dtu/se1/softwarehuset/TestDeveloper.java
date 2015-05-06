@@ -14,8 +14,12 @@ public class TestDeveloper  extends SampleDataSetup{
 	
 	@Test
 	public void testRegisterHours() throws Exception {
-		
 		Developer d = m.createDev();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		a.addStaff(d);
 		
 		a.registerHours(d, 10);
 		assertEquals(10, d.getRegisteredHours());
@@ -26,6 +30,11 @@ public class TestDeveloper  extends SampleDataSetup{
 	@Test
 	public void testRegisterHoursMultiple() throws Exception {		
 		Developer d = m.createDev();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		a.addStaff(d);
 
 		a.registerHours(d, 10);
 		a.registerHours(d, 5);
