@@ -66,4 +66,13 @@ public class Project {
 		return id;
 	}
 
+	public Activity getActivityById(int activityId) {
+		for (Activity a: activityList){
+			if (a.getId() == id){
+				return a;
+			}
+		}
+		return null;
+	}
+
 }
