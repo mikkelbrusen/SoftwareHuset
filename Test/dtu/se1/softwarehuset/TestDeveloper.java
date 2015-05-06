@@ -45,8 +45,14 @@ public class TestDeveloper  extends SampleDataSetup{
 	
 	@Test
 	public void testRegisterHoursMultipleDevs() throws Exception {
+		Developer pl = m.createDev();
 		Developer d1 = m.createDev();
 		Developer d2 = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		a.addStaff(d1);
+		a.addStaff(d2);
 		
 		a.registerHours(d1, 10);
 		a.registerHours(d2, 10);
