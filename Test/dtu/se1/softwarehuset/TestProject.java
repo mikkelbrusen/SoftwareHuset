@@ -9,9 +9,13 @@ import org.junit.Test;
 public class TestProject extends SampleDataSetup{
 	
 	@Test
-	public void testCreateActivity() {
-	
+	public void testCreateActivity() throws AccessDeniedException, ActivityStaffException {
 		int activitySize = p.getActivities().size();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		
 		Activity a = p.createActivity("activity", 10, start, end);
 		
 		assertEquals(activitySize+1, p.getActivities().size());
@@ -21,6 +25,23 @@ public class TestProject extends SampleDataSetup{
 		assertEquals(start, a.getStartDate());
 		assertEquals(end, a.getEndDate());
 		
+	}
+	
+	@Test
+	public void testCreateActivityNotProjectLeader() throws AccessDeniedException, ActivityStaffException {
+		int activitySize = p.getActivities().size();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		try {
+			p.createActivity("activity", 10, start, end);
+			fail("Activity shoud not be created");
+		} catch (AccessDeniedException e) {
+			assertEquals("You are not the leader of this project", e.getMessage());
+		}
+		
+		assertEquals(activitySize, p.getActivities().size());
 	}
 	
 	@Test
