@@ -62,23 +62,23 @@ public class TestActivity extends SampleDataSetup{
 	}
 	
 	@Test
-	public void testAddStaffNotAvaible() throws AccessDeniedException, ActivityStaffException {
+	public void testAddStaffNotAvailable() throws AccessDeniedException, ActivityStaffException {
 		Developer d1 = m.createDev();
 		Developer d2 = m.createDev();
 		m.logout();
 		m.login(d1);
 		p.becomeProjectLeader();
 		
-		List<Activity> activities = new ArrayList<Activity>();
-		for (int i = 1; i <= 10; i++){
-			activities.add(p.createActivity("activity"+i, 10, start, end));
+		d2.setAvailable(false);
+		try {
+			a.addStaff(d2);
+			fail("The activity should not be added");
+		} catch (ActivityStaffException e) {
+			assertEquals("The developer is unavailable", e.getMessage());
 		}
 		
-		for (int i = 0; i < activities.size()-1; i++){
-			activities.get(i).addStaff(d2);
-		}
+		assertEquals(0,a.getStaff().size());
 		
-		// NOT DONE BITCH
 	}
 	
 }
