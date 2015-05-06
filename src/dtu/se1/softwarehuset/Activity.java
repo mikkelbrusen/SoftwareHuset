@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Activity {
+	private static int index = 1;
+	private int id;
+	
 	private String title;
 	private int expectedWorkHours;
 	private Calendar startDate;
@@ -23,6 +26,8 @@ public class Activity {
 		if (expectedWorkHours < 0) {
 			throw new InvalidParameterException("Expexted work hours must be non-negative");
 		}
+
+		this.id += Activity.index++;
 
 		this.setTitle(title);
 		this.setExpectedWorkHours(expectedWorkHours);
@@ -113,6 +118,10 @@ public class Activity {
 
 	public List<Developer> getStaff() {
 		return staff;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }
