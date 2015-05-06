@@ -8,10 +8,20 @@ public class Developer {
 	private static int index = 0;
 	protected int id;
 	private List<Activity> activityList;
+	private boolean available;
 	
 	public Developer() {
 		this.id += Developer.index++;
 		activityList = new ArrayList<Activity>();
+		this.available = true;
+	}
+	
+	public boolean isAvailable() {
+		return available;
+	}
+	
+	public void setAvailable(boolean bool) {
+		available = bool;
 	}
 	
 	public int getRegisteredHours() {
