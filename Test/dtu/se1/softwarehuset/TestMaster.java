@@ -22,10 +22,13 @@ public class TestMaster{
 
 		assertEquals("first project", p.getTitle());
 		assertEquals(cal, p.getStartDate());
+		assertEquals(p, m.getProjectById(p.getId()));
+		assertEquals(null, m.getProjectById(p.getId()+1));
 
 		assertEquals(p.getActivities().size(), 1);
 		assertEquals(p.getActivities().get(0).getTitle(),
-				"Project Leader");	    
+				"Project Leader");	   
+		
 	}
 	
 	@Test
