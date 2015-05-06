@@ -68,7 +68,7 @@ public class Project {
 
 	public Activity getActivityById(int activityId) {
 		for (Activity a: activityList){
-			if (a.getId() == id){
+			if (a.getId() == activityId){
 				return a;
 			}
 		}
