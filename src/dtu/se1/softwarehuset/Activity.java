@@ -119,6 +119,10 @@ public class Activity {
 	public List<Developer> getStaff() {
 		return staff;
 	}
+	
+	public Project getProject() {
+		return p;
+	}
 
 	public int getId() {
 		return id;
