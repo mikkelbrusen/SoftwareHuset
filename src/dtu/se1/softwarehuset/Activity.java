@@ -1,5 +1,6 @@
 package dtu.se1.softwarehuset;
 
+import java.nio.file.AccessDeniedException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,8 +40,10 @@ public class Activity {
 		staff = new ArrayList<Developer>();
 	}
 	
-	public void registerHours(Developer d, int hours) {
-		if (!registeredHours.containsKey(d)) {
+	public void registerHours(Developer d, int hours) throws AccessDeniedException {
+		if (!staff.contains(d)){
+			throw new AccessDeniedException("The developer is not assigned to the activity");
+		} else if (!registeredHours.containsKey(d)) {
 			registeredHours.put(d, hours);
 		} else {
 			registeredHours.put(d, registeredHours.get(d) + hours);
