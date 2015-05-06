@@ -17,7 +17,7 @@ public class Developer {
 	}
 	
 	public boolean isAvailable() {
-		return available;
+		return available && activityList.size() < 10;
 	}
 	
 	public void setAvailable(boolean bool) {
