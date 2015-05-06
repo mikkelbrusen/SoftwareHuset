@@ -77,8 +77,9 @@ public class TestDeveloper  extends SampleDataSetup{
 		
 		a.registerHours(d1, 10);
 		a.registerHours(d2, 10);
+		a.registerHours(d1, 10);
 		
-		assertEquals(20, a.getRegisteredHours());
+		assertEquals(30, a.getRegisteredHours());
 		
 	}
 
