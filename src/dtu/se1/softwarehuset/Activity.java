@@ -92,7 +92,9 @@ public class Activity {
 	}
 
 	public void addStaff(Developer d) throws ActivityStaffException {
-		if (alreadyAssigned(d)){
+		if (!d.isAvailable()){
+			throw new ActivityStaffException("The developer is unavailable");
+		} else if (alreadyAssigned(d)){
 			throw new ActivityStaffException("Developer is already assinged");
 		} else if (projectLeaderIsEmpty()) {
 			staff.add(d);
