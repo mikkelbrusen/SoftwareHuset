@@ -3,6 +3,7 @@ package dtu.se1.softwarehuset;
 import static org.junit.Assert.*;
 
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -58,6 +59,23 @@ public class TestProject extends SampleDataSetup{
 			fail("Activity should not be created");
 		} catch (AlreadyExistingException e) {
 			assertEquals("The activity already exists", e.getMessage());
+		}
+		
+		assertEquals(activitySize, p.getActivities().size());
+	}
+	
+	@Test
+	public void testCreateActivityEmptyName() throws Exception {
+		int activitySize = p.getActivities().size();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		try {
+			p.createActivity("", 10, start, end);
+			fail("The activity should not be created");
+		} catch (InvalidParameterException e) {
+			assertEquals("The activity must have a non-empty name", e.getMessage());
 		}
 		
 		assertEquals(activitySize, p.getActivities().size());
