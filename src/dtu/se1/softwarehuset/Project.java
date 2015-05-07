@@ -26,19 +26,21 @@ public class Project {
 	public Activity createActivity(String title, int expectedWorkHours,
 			Calendar startDate, Calendar endDate) throws AccessDeniedException, AlreadyExistingException {
 		Activity newActivity = new Activity(m, this, title, expectedWorkHours, startDate, endDate);
-		if (alreadyExists(newActivity)){
+		if (alreadyExists(newActivity))
 			throw new AlreadyExistingException("The activity already exists");
-		} else if (m.getLogin().equals(m.getAdmin())){
+		
+		if (isAdmin() || isProjectLeader()) {
 			activityList.add(newActivity);
 			return activityList.get(activityList.size()-1);
-		} else if (!isProjectLeader()){
-			throw new AccessDeniedException("You are not the leader of this project");
 		} else {
-			activityList.add(newActivity);
-			return activityList.get(activityList.size()-1);
+			throw new AccessDeniedException("You do not have the rights to create a new activity");
 		}
 	}
 	
+	private boolean isAdmin() {
+		return m.getLogin().equals(m.getAdmin());
+	}
+
 	private boolean alreadyExists(Activity newActivity) {
 		for (Activity a: activityList){
 			if (newActivity.getTitle().equals(a.getTitle())){

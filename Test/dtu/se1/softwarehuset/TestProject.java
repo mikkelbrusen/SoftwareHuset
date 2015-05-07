@@ -39,7 +39,7 @@ public class TestProject extends SampleDataSetup{
 			p.createActivity("activity", 10, start, end);
 			fail("Activity shoud not be created");
 		} catch (AccessDeniedException e) {
-			assertEquals("You are not the leader of this project", e.getMessage());
+			assertEquals("You do not have the rights to create a new activity", e.getMessage());
 		}
 		
 		assertEquals(activitySize, p.getActivities().size());
