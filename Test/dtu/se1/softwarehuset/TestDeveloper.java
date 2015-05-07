@@ -11,7 +11,7 @@ public class TestDeveloper  extends SampleDataSetup{
 	@Test
 	public void testCreateDeveloper() throws Exception {
 		
-		Developer d = m.createDev();
+		m.createDev();
 		assertEquals(1, m.getDevs().size());
 	}
 	

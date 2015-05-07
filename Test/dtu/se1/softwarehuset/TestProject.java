@@ -101,7 +101,7 @@ public class TestProject extends SampleDataSetup{
 	
 	@Test
 	public void testBecomeProjectLeader() throws Exception {
-		Activity a = p.createActivity("activity", 10, start, end);
+		p.createActivity("activity", 10, start, end);
 		Developer d = m.createDev();
 		m.logout();
 		m.login(d);
@@ -112,7 +112,7 @@ public class TestProject extends SampleDataSetup{
 	
 	@Test
 	public void testBecomeProjectLeaderAlreadyAssigned() throws Exception {
-		Activity a = p.createActivity("activity", 10, start, end);
+		p.createActivity("activity", 10, start, end);
 		Developer d1 = m.createDev();
 		Developer d2 = m.createDev();
 		m.logout();

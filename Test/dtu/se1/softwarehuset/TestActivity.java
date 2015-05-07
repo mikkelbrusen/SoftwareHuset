@@ -3,12 +3,6 @@ package dtu.se1.softwarehuset;
 import static org.junit.Assert.*;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
 
 public class TestActivity extends SampleDataSetup {
