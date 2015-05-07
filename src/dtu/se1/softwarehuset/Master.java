@@ -1,6 +1,7 @@
 package dtu.se1.softwarehuset;
 
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -22,14 +23,24 @@ public class Master {
 		if (!isAdmin()) {
 			throw new AccessDeniedException("You are not an administrator");
 		}
+		
 		Project project = new Project(this, title, startDate);
 		if (alreadyExists(project)){
 			throw new AlreadyExistingException("The project already exists");
 		}
+		
+		if (nameIsEmpty(project)){
+			throw new InvalidParameterException("Project must have a non-empty name");
+		}
+		
 		projectList.add(project);
 		return projectList.get(projectList.size()-1);
 	}
 	
+	private boolean nameIsEmpty(Project project) {
+		return project.getTitle().equals("");
+	}
+
 	private boolean alreadyExists(Project newProject) {
 		for (Project p: projectList){
 			if (newProject.getTitle().equals(p.getTitle())){
