@@ -18,7 +18,7 @@ public class Master {
 		devLoggedIn = null;
 	}
 
-	public Project createProject(String title, Calendar startDate) throws AccessDeniedException {
+	public Project createProject(String title, Calendar startDate) throws AccessDeniedException, AlreadyExistingException {
 		if (getLoginId() != 0) {
 			throw new AccessDeniedException("You are not an administrator");
 		}

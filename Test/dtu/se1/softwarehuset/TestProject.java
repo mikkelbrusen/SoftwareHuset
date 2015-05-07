@@ -47,12 +47,12 @@ public class TestProject extends SampleDataSetup{
 	
 	@Test
 	public void testCreateExistingActivity() throws AccessDeniedException, ActivityStaffException, AlreadyExistingException {
-		int activitySize = p.getActivities().size();
 		Developer pl = m.createDev();
 		m.logout();
 		m.login(pl);
 		p.becomeProjectLeader();
 		p.createActivity("activity", 10, start, end);
+		int activitySize = p.getActivities().size();
 		try {
 			p.createActivity("activity", 10, new GregorianCalendar(2015, Calendar.JANUARY, 11), new GregorianCalendar(2015, Calendar.JANUARY, 20));
 			fail("Activity should not be created");

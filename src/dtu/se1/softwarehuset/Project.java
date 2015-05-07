@@ -13,7 +13,7 @@ public class Project {
 	private List<Activity> activityList;
 	private Master m;
 	
-	public Project(Master m, String title, Calendar startDate) throws AccessDeniedException {
+	public Project(Master m, String title, Calendar startDate) throws AccessDeniedException, AlreadyExistingException {
 		this.id += Project.index++;
 		activityList = new ArrayList<Activity>();
 		
@@ -24,9 +24,11 @@ public class Project {
 	}
 	
 	public Activity createActivity(String title, int expectedWorkHours,
-			Calendar startDate, Calendar endDate) throws AccessDeniedException {
+			Calendar startDate, Calendar endDate) throws AccessDeniedException, AlreadyExistingException {
 		Activity newActivity = new Activity(m, this, title, expectedWorkHours, startDate, endDate);
-		if (m.getLogin().equals(m.getAdmin())){
+		if (alreadyExists(newActivity)){
+			throw new AlreadyExistingException("The activity already exists");
+		} else if (m.getLogin().equals(m.getAdmin())){
 			activityList.add(newActivity);
 			return activityList.get(activityList.size()-1);
 		} else if (!isProjectLeader()){
@@ -35,6 +37,15 @@ public class Project {
 			activityList.add(newActivity);
 			return activityList.get(activityList.size()-1);
 		}
+	}
+	
+	private boolean alreadyExists(Activity newActivity) {
+		for (Activity a: activityList){
+			if (newActivity.getTitle().equals(a.getTitle())){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isProjectLeader() {
