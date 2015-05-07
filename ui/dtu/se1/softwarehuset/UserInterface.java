@@ -262,17 +262,22 @@ public class UserInterface {
 		System.out.println("Format: \"yyyy/mm/dd\"");
 		Calendar endDate = createCalendarFromString(userInputString(REGEX_DATE));
 
-		Activity a = p.createActivity(title, ewh, startDate, endDate);
+		Activity a;
+		try {
+			a = p.createActivity(title, ewh, startDate, endDate);
 
-		System.out.println("---\nSuccess!");
-		System.out.println("Created activity \"" + a.getTitle() + "\"");
-		System.out.println("Start date: "
-				+ new Date(startDate.getTimeInMillis()).toString());
-		System.out.println("End date: "
-				+ new Date(endDate.getTimeInMillis()).toString());
-		System.out.println("---");
+			System.out.println("---\nSuccess!");
+			System.out.println("Created activity \"" + a.getTitle() + "\"");
+			System.out.println("Start date: "
+					+ new Date(startDate.getTimeInMillis()).toString());
+			System.out.println("End date: "
+					+ new Date(endDate.getTimeInMillis()).toString());
+			System.out.println("---");
 
-		manageActivity(a);
+			manageActivity(a);
+		} catch (AccessDeniedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void accessActivities(Project p) {
