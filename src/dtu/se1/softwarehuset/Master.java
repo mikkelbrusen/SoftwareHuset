@@ -19,13 +19,17 @@ public class Master {
 	}
 
 	public Project createProject(String title, Calendar startDate) throws AccessDeniedException, AlreadyExistingException {
-		if (getLoginId() != 0) {
+		if (!isAdmin()) {
 			throw new AccessDeniedException("You are not an administrator");
 		}
 		Project project = new Project(this, title, startDate);
 		projectList.add(project);
 
 		return projectList.get(projectList.size()-1);
+	}
+
+	public boolean isAdmin() {
+		return getAdmin().equals(getLogin());
 	}
 	
 	public Developer createDev() throws AccessDeniedException {

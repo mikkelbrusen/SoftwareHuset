@@ -29,16 +29,12 @@ public class Project {
 		if (alreadyExists(newActivity))
 			throw new AlreadyExistingException("The activity already exists");
 		
-		if (isAdmin() || isProjectLeader()) {
+		if (m.isAdmin() || isProjectLeader()) {
 			activityList.add(newActivity);
 			return activityList.get(activityList.size()-1);
 		} else {
 			throw new AccessDeniedException("You do not have the rights to create a new activity");
 		}
-	}
-	
-	private boolean isAdmin() {
-		return m.getLogin().equals(m.getAdmin());
 	}
 
 	private boolean alreadyExists(Activity newActivity) {
