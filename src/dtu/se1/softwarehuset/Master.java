@@ -4,7 +4,6 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Master {
 	private List<Project> projectList;
@@ -58,7 +57,7 @@ public class Master {
 	}
 	
 	public Integer getLoginId() {
-		return devLoggedIn.getId();
+		return (devLoggedIn==null) ? null: devLoggedIn.getId();
 	}
 	
 	public Developer getLogin() {
