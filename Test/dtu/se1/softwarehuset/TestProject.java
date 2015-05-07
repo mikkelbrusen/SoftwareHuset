@@ -33,7 +33,6 @@ public class TestProject extends SampleDataSetup{
 		Developer pl = m.createDev();
 		m.logout();
 		m.login(pl);
-		p.becomeProjectLeader();
 		try {
 			p.createActivity("activity", 10, start, end);
 			fail("Activity shoud not be created");
