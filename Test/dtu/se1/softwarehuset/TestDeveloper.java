@@ -82,5 +82,28 @@ public class TestDeveloper  extends SampleDataSetup{
 		assertEquals(30, a.getRegisteredHours());
 		
 	}
+	
+	@Test
+	public void testAcceptRequest() throws Exception{
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		Developer d3 = m.createDev();
+
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		a.addStaff(d2);
+		
+		m.logout();
+		m.login(d2);
+		try {
+			a.requestAssistance(d3);
+		} catch (Exception e) {
+			fail("Request should have been created");
+		}
+		
+		d3.acceptRequest(a, true);
+		assertEquals(true, a.getStaff().contains(d3));
+	}
 
 }
