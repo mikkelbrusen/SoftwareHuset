@@ -25,10 +25,10 @@ public class TestMaster{
 		assertEquals(cal, p.getStartDate());
 		assertEquals(p, m.getProjectById(p.getId()));
 		assertEquals(null, m.getProjectById(p.getId()+1));
-
 		assertEquals(p.getActivities().size(), 1);
-		assertEquals(p.getActivities().get(0).getTitle(),
-				"Project Leader");	   
+		int activityId = p.getActivities().get(0).getId();
+		assertEquals("Project Leader", p.getActivityById(activityId).getTitle());
+		assertEquals(null, p.getActivityById(activityId+1));
 		
 	}
 	
