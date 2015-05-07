@@ -15,7 +15,7 @@ public class Master {
 	public Master() {
 		projectList = new ArrayList<Project>();
 		developerList = new ArrayList<Developer>();
-		admin = new Admin();
+		admin = new Admin(this);
 		devLoggedIn = null;
 	}
 
@@ -58,7 +58,7 @@ public class Master {
 		if (getLoginId() != 0){
 			throw new AccessDeniedException("You are not an administrator");
 		}
-		developerList.add(new Developer());
+		developerList.add(new Developer(this));
 		return developerList.get(developerList.size()-1);	
 	}
 	

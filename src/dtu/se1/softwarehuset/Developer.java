@@ -12,12 +12,14 @@ public class Developer {
 	private List<Activity> activityList;
 	private boolean available;
 	private Map<Activity, Developer> requests;
+	private Master m;
 	
-	public Developer() {
+	public Developer(Master m) {
 		this.id += Developer.index++;
 		activityList = new ArrayList<Activity>();
 		this.available = true;
 		requests = new HashMap<Activity, Developer>();
+		this.m = m;
 	}
 	
 	public boolean isAvailable() {
