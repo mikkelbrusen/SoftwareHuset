@@ -23,10 +23,6 @@ public class Activity {
 
 	public Activity(Master m, Project p, String title, int expectedWorkHours, Calendar startDate,
 			Calendar endDate) {
-		
-		if (expectedWorkHours < 0) {
-			throw new InvalidParameterException("Expexted work hours must be non-negative");
-		}
 
 		this.id += Activity.index++;
 

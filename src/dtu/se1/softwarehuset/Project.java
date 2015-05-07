@@ -34,9 +34,11 @@ public class Project {
 		if (nameIsEmpty(newActivity))
 			throw new InvalidParameterException("The activity must have a non-empty name");
 		
-		if (!m.isAdmin() && !isProjectLeader()) {
+		if (expectedWorkHours < 0)
+			throw new InvalidParameterException("Expexted work hours must be non-negative");
+		
+		if (!m.isAdmin() && !isProjectLeader())
 			throw new AccessDeniedException("You do not have the rights to create a new activity");
-		}
 		
 		activityList.add(newActivity);
 		return activityList.get(activityList.size()-1);
