@@ -23,9 +23,20 @@ public class Master {
 			throw new AccessDeniedException("You are not an administrator");
 		}
 		Project project = new Project(this, title, startDate);
+		if (alreadyExists(project)){
+			throw new AlreadyExistingException("The project already exists");
+		}
 		projectList.add(project);
-
 		return projectList.get(projectList.size()-1);
+	}
+	
+	private boolean alreadyExists(Project newProject) {
+		for (Project p: projectList){
+			if (newProject.getTitle().equals(p.getTitle())){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isAdmin() {

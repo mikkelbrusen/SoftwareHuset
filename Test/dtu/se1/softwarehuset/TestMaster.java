@@ -47,6 +47,24 @@ public class TestMaster{
 	}
 	
 	@Test
+	public void testCreateProjectAlreadyExcist() throws Exception{
+		Master m = new Master();
+		m.login(m.getAdmin());
+		Calendar cal = new GregorianCalendar(2015, Calendar.JANUARY, 10);
+
+		Project p = m.createProject("first project", cal);
+		try {
+			Project p2 = m.createProject("first project", cal);
+			fail("Project should not have been created");
+			
+		} catch(AlreadyExistingException e){
+			assertEquals("The project already exists",e.getMessage());
+		}
+	}
+	
+	
+	
+	@Test
 	public void testCreateDeveloper() throws AccessDeniedException {
 		Master m = new Master();
 		m.login(m.getAdmin());
