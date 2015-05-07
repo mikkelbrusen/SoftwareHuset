@@ -1,6 +1,7 @@
 package dtu.se1.softwarehuset;
 
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,12 +31,19 @@ public class Project {
 		if (alreadyExists(newActivity))
 			throw new AlreadyExistingException("The activity already exists");
 		
+		if (nameIsEmpty(newActivity))
+			throw new InvalidParameterException("The activity must have a non-empty name");
+		
 		if (!m.isAdmin() && !isProjectLeader()) {
 			throw new AccessDeniedException("You do not have the rights to create a new activity");
 		}
 		
 		activityList.add(newActivity);
 		return activityList.get(activityList.size()-1);
+	}
+	
+	private boolean nameIsEmpty(Activity newActivity) {
+		return newActivity.getTitle().equals("");
 	}
 
 	private boolean alreadyExists(Activity newActivity) {
