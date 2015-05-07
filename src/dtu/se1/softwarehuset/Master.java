@@ -56,8 +56,8 @@ public class Master {
 		devLoggedIn = null;
 	}
 	
-	public Integer getLoginId() {
-		return (devLoggedIn==null) ? null: devLoggedIn.getId();
+	public int getLoginId() {
+		return (devLoggedIn==null) ? -1: devLoggedIn.getId();
 	}
 	
 	public Developer getLogin() {
