@@ -473,10 +473,6 @@ public class UserInterface {
 
 	private void devSetAvail(Developer d, boolean b) {
 		String status = (b) ? "Available": "Unavailable";
-		if (d.isAvailable() == b) {
-			System.out.println("Status is already set to "+status);
-			personalMenu();
-		}
 		
 		d.setAvailable(b);
 		System.out.println("Successfully set status to: "+status);
