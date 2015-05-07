@@ -3,6 +3,7 @@ package dtu.se1.softwarehuset;
 import static org.junit.Assert.*;
 
 import java.nio.file.AccessDeniedException;
+import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -62,7 +63,18 @@ public class TestMaster{
 		}
 	}
 	
-	
+	@Test
+	public void testCreateProjectEmptyName() throws Exception {
+		Master m = new Master();
+		m.login(m.getAdmin());
+		Calendar cal = new GregorianCalendar(2015, Calendar.JANUARY, 10);
+		try {
+			m.createProject("", cal);
+			fail("Project should not have been created");
+		} catch (InvalidParameterException e) {
+			assertEquals("Project must have a non-empty name", e.getMessage());
+		}
+	}
 	
 	@Test
 	public void testCreateDeveloper() throws AccessDeniedException {
