@@ -1,10 +1,16 @@
 package dtu.se1.softwarehuset;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+
+import org.omg.PortableInterceptor.ACTIVE;
 
 public class UserInterface {
 
@@ -330,7 +336,7 @@ public class UserInterface {
 			addStaff(a);
 			break;
 		case (4):
-			// requestAssistance(a);
+			 requestAssistance(a);
 			break;
 		case (5):
 			mainMenu();
@@ -340,6 +346,44 @@ public class UserInterface {
 			mainMenu();
 		}
 
+	}
+
+	private void requestAssistance(Activity a) {
+		Developer dev = m.getLogin();
+		
+		if (!a.getStaff().contains(dev)) {
+			System.out.println("You are not assigned to this activity");
+			manageActivity(a);
+		}
+		
+		System.out.println("Requesting assistance");
+		System.out.println("Developer list\n---");
+		
+		for (Developer d: m.getDevs()) {
+			System.out.println("Developer id: "+d.getId());
+		}
+		System.out.println("---");
+		
+		System.out.println("Enter \"-1\" to return to main menu.");
+		System.out.println("Choose a developer by ID to assist you:");
+		
+		int choice = userInputInt();
+		
+		if (choice == -1) {
+			mainMenu();
+		}
+		
+		
+		try {
+			Developer reqDev = m.getDevById(choice);
+			a.requestAssistance(reqDev);
+			System.out.println("Successfully requested dev with id \""+reqDev.getId()+"\" to assist you!");
+			manageActivity(a);
+		} catch (ActivityStaffException e) {
+			System.out.println("Error\n"+e.getMessage());
+			requestAssistance(a);
+		}
+		
 	}
 
 	private void listStaff(Activity a) {
@@ -430,7 +474,8 @@ public class UserInterface {
 		System.out.println("See registered hours - 1");
 		System.out.println("See availablity status - 2");
 		System.out.println("Change availability - 3");
-		System.out.println("Main menu - 4");
+		System.out.println("Manage assistance requests - 4");
+		System.out.println("Main menu - 5");
 
 		int choice = userInputInt();
 		switch (choice) {
@@ -444,11 +489,68 @@ public class UserInterface {
 			changeAvail(d);
 			break;
 		case (4):
+			manageRequests(d);
+			break;
+		case (5):
 		default:
 			System.out.println("Returning to main menu..");
 			mainMenu();
 		}
 
+	}
+
+	@SuppressWarnings("null")
+	private void manageRequests(Developer d) {
+		
+		if (d.getRequests().size() == 0) {
+			System.out.println("There are no pending requests.");
+			personalMenu();
+		}
+		
+		System.out.println("List of pending requests\n---");
+		Map<Activity, Developer> requests = d.getRequests();
+		
+		List<Activity> activityList = new ArrayList<Activity>();
+		
+		for (Map.Entry<Activity, Developer> entry: requests.entrySet()) {
+			Activity a = entry.getKey();
+			Developer rDev = entry.getValue();
+			activityList.add(a);
+			System.out.println("\""+a.getTitle()+"\" helping developer \""+rDev.getId()+"\". ID: "+a.getId());
+		}
+		
+		System.out.println("---\nChoose a request:");
+		
+		int choice = userInputInt();
+		Activity a = ArrayListGetById(activityList, choice);
+
+		
+		while (a == null) {
+			System.out.println("Activity is not available. Try again:");
+			a = ArrayListGetById(activityList, userInputInt());
+		}
+		
+		
+		System.out.println("\""+a.getTitle()+"\"");
+		System.out.println("Do you wish to accept or decline the request?");
+		System.out.println("Accept - 1\nDecline - 2");
+		
+		choice = userInputInt();
+		
+		m.getLogin().acceptRequest(a, choice == 1);
+		
+		System.out.println("Successfully accepted the request!");
+		personalMenu();
+		
+	}
+	
+	private Activity ArrayListGetById(List<Activity> arr, int id) {
+		for (Activity a: arr) {
+			if (a.getId() == id) {
+				return a;
+			}
+		}
+		return null;
 	}
 
 	private void changeAvail(Developer d) {
