@@ -43,7 +43,9 @@ public class Activity {
 	public void registerHours(Developer d, int hours) throws AccessDeniedException {
 		if (!staff.contains(d)){
 			throw new AccessDeniedException("The developer is not assigned to the activity");
-		} else if (!registeredHours.containsKey(d)) {
+		}
+		
+		if (!registeredHours.containsKey(d)) {
 			registeredHours.put(d, hours);
 		} else {
 			registeredHours.put(d, registeredHours.get(d) + hours);
