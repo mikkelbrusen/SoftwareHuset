@@ -25,13 +25,14 @@ public class Project {
 	
 	public Activity createActivity(String title, int expectedWorkHours,
 			Calendar startDate, Calendar endDate) throws AccessDeniedException {
+		Activity newActivity = new Activity(m, this, title, expectedWorkHours, startDate, endDate);
 		if (m.getLogin().equals(m.getAdmin())){
-			activityList.add(new Activity(m, this, title, expectedWorkHours, startDate, endDate));
+			activityList.add(newActivity);
 			return activityList.get(activityList.size()-1);
 		} else if (!isProjectLeader()){
 			throw new AccessDeniedException("You are not the leader of this project");
 		} else {
-			activityList.add(new Activity(m, this, title, expectedWorkHours, startDate, endDate));
+			activityList.add(newActivity);
 			return activityList.get(activityList.size()-1);
 		}
 	}
