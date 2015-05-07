@@ -4,18 +4,19 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Master {
 	private List<Project> projectList;
 	private List<Developer> developerList;
 	private Developer admin;
-	private int loginId;
+	private Developer devLoggedIn;
 	
 	public Master() {
 		projectList = new ArrayList<Project>();
 		developerList = new ArrayList<Developer>();
 		admin = new Admin();
-		loginId = -1;
+		devLoggedIn = null;
 	}
 
 	public Project createProject(String title, Calendar startDate) throws AccessDeniedException {
@@ -49,22 +50,19 @@ public class Master {
 	}
 
 	public void login(Developer dev) {
-		loginId = dev.getId();
+		devLoggedIn = dev;
 	}
 	
 	public void logout() {
-		loginId = -1;
+		devLoggedIn = null;
 	}
 	
 	public Integer getLoginId() {
-		return loginId;
+		return devLoggedIn.getId();
 	}
 	
 	public Developer getLogin() {
-		if (loginId == 0)
-			return admin;
-		
-		return getDevById(loginId);
+		return devLoggedIn;
 	}
 	
 	public Developer getDevById(int id) {
