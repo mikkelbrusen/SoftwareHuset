@@ -576,7 +576,11 @@ public class UserInterface {
 	private void devSetAvail(Developer d, boolean b) {
 		String status = (b) ? "Available": "Unavailable";
 		
-		d.setAvailable(b);
+		try {
+			d.setAvailable(b);
+		} catch (AccessDeniedException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Successfully set status to: "+status);
 		personalMenu();
 		
