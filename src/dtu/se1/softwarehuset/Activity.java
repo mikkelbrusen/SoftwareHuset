@@ -135,4 +135,31 @@ public class Activity {
 		return id;
 	}
 
+	public void requestAssistance(Developer reqD) throws ActivityStaffException {
+		Developer d = m.getLogin();
+		
+		if (!isOnStaff(d))
+			throw new ActivityStaffException("You need to be assigned to the activity to request assistance.");
+			
+		if (isOnStaff(reqD))
+			throw new ActivityStaffException("The chosen developer is already assigned to this activity.");
+		
+		if (!reqD.isAvailable()) 
+			throw new ActivityStaffException("The chosen developer is not available");
+		
+		if (alreadyRequested(reqD)) 
+			throw new ActivityStaffException("The chosen developer has already been requested");
+		
+		reqD.addRequest(this, d);
+		
+	}
+
+	private boolean alreadyRequested(Developer reqD) {
+		return reqD.getRequests().containsKey(this);
+	}
+	
+	private boolean isOnStaff(Developer d) {
+		return staff.contains(d);
+	}
+
 }

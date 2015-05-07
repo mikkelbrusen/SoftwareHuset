@@ -81,116 +81,116 @@ public class TestActivity extends SampleDataSetup {
 		assertEquals(0, a.getStaff().size());
 
 	}
+	
+	@Test
+	public void testRequestAssistanceNotAssigned() throws AccessDeniedException {
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		m.logout();
+		m.login(d1);
 
-//	@Test
-//	public void testRequestAssistanceNotAssigned() throws AccessDeniedException {
-//		Developer d1 = m.createDev();
-//		Developer d2 = m.createDev();
-//		m.logout();
-//		m.login(d1);
-//
-//		try {
-//			a.requestAssistance(d2);
-//			fail("Request should have been denied.");
-//		} catch (Exception e) {
-//			assertEquals(
-//					"You need to be assigned to the activity to request assistance.",
-//					e.getMessage());
-//		}
-//
-//	}
-//
-//	@Test
-//	public void testRequestAssistanceDeveloperAlreadyOnStaff() throws Exception {
-//		Developer d1 = m.createDev();
-//		Developer d2 = m.createDev();
-//		Developer d3 = m.createDev();
-//
-//		m.logout();
-//		m.login(d1);
-//		p.becomeProjectLeader();
-//		a.addStaff(d2);
-//		a.addStaff(d3);
-//
-//		m.logout();
-//		m.login(d2);
-//		try {
-//			a.requestAssistance(d3);
-//			fail("Request should have been denied.");
-//		} catch (Exception e) {
-//			assertEquals(
-//					"The chosen developer is already assigned to this activity",
-//					e.getMessage());
-//		}
-//
-//	}
-//	
-//	@Test
-//	public void testRequestAssistance() throws Exception{
-//		Developer d1 = m.createDev();
-//		Developer d2 = m.createDev();
-//		Developer d3 = m.createDev();
-//
-//		m.logout();
-//		m.login(d1);
-//		p.becomeProjectLeader();
-//		a.addStaff(d2);
-//
-//		m.logout();
-//		m.login(d2);
-//		try {
-//			a.requestAssistance(d3);
-//			
-//			assertEquals(1, d3.getRequests.size());
-//			assertEquals(d2, d3.getRequests.get(a));
-//		} catch (Exception e) {
-//			fail("Request should not have been denied.");
-//		}
-//	}
-//	
-//	@Test
-//	public void testRequestAssistanceDeveloperUnavailable() throws Exception{
-//		Developer d1 = m.createDev();
-//		Developer d2 = m.createDev();
-//		Developer d3 = m.createDev();
-//
-//		m.logout();
-//		m.login(d1);
-//		p.becomeProjectLeader();
-//		a.addStaff(d2);
-//
-//		d3.setAvailable(false);
-//		
-//		m.logout();
-//		m.login(d2);
-//		try {
-//			a.requestAssistance(d3);
-//			fail("Request should have been denied.");
-//		} catch (Exception e) {
-//			assertEquals("The chosen developer is not available", e.getMessage());
-//		}
-//	}
-//	
-//	@Test
-//	public void testRequestAssistanceDeveloperUnavailable() throws Exception{
-//		Developer d1 = m.createDev();
-//		Developer d2 = m.createDev();
-//		Developer d3 = m.createDev();
-//
-//		m.logout();
-//		m.login(d1);
-//		p.becomeProjectLeader();
-//		a.addStaff(d2);
-//		
-//		m.logout();
-//		m.login(d2);
-//		try {
-//			a.requestAssistance(d3);
-//			a.requestAssistance(d3);
-//			fail("Request should have been denied.");
-//		} catch (Exception e) {
-//			assertEquals("The chosen developer has already been requested", e.getMessage());
-//		}
-//	}
+		try {
+			a.requestAssistance(d2);
+			fail("Request should have been denied.");
+		} catch (Exception e) {
+			assertEquals(
+					"You need to be assigned to the activity to request assistance.",
+					e.getMessage());
+		}
+
+	}
+
+	@Test
+	public void testRequestAssistanceDeveloperAlreadyOnStaff() throws Exception {
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		Developer d3 = m.createDev();
+
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		a.addStaff(d2);
+		a.addStaff(d3);
+
+		m.logout();
+		m.login(d2);
+		try {
+			a.requestAssistance(d3);
+			fail("Request should have been denied.");
+		} catch (Exception e) {
+			assertEquals(
+					"The chosen developer is already assigned to this activity.",
+					e.getMessage());
+		}
+
+	}
+	
+	@Test
+	public void testRequestAssistance() throws Exception{
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		Developer d3 = m.createDev();
+
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		a.addStaff(d2);
+
+		m.logout();
+		m.login(d2);
+		try {
+			a.requestAssistance(d3);
+			
+			assertEquals(1, d3.getRequests().size());
+			assertEquals(d2, d3.getRequests().get(a));
+		} catch (Exception e) {
+			fail("Request should not have been denied.");
+		}
+	}
+	
+	@Test
+	public void testRequestAssistanceDeveloperUnavailable() throws Exception{
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		Developer d3 = m.createDev();
+
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		a.addStaff(d2);
+
+		d3.setAvailable(false);
+		
+		m.logout();
+		m.login(d2);
+		try {
+			a.requestAssistance(d3);
+			fail("Request should have been denied.");
+		} catch (Exception e) {
+			assertEquals("The chosen developer is not available", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testRequestAssistanceDuplicateRequest() throws Exception{
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		Developer d3 = m.createDev();
+
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		a.addStaff(d2);
+		
+		m.logout();
+		m.login(d2);
+		try {
+			a.requestAssistance(d3);
+			a.requestAssistance(d3);
+			fail("Request should have been denied.");
+		} catch (Exception e) {
+			assertEquals("The chosen developer has already been requested", e.getMessage());
+		}
+	}
 
 }
