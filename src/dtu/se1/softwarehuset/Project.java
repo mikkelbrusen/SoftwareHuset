@@ -1,5 +1,6 @@
 package dtu.se1.softwarehuset;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,7 +13,7 @@ public class Project {
 	private List<Activity> activityList;
 	private Master m;
 	
-	public Project(Master m, String title, Calendar startDate) {
+	public Project(Master m, String title, Calendar startDate) throws AccessDeniedException {
 		this.id += Project.index++;
 		activityList = new ArrayList<Activity>();
 		
@@ -22,9 +23,21 @@ public class Project {
 		createActivity("Project Leader", 0, startDate, null);
 	}
 	
-	public Activity createActivity(String title, int expectedWorkHours, Calendar startDate, Calendar endDate) {
-		activityList.add(new Activity(m, this, title, expectedWorkHours, startDate, endDate));
-		return activityList.get(activityList.size()-1);
+	public Activity createActivity(String title, int expectedWorkHours,
+			Calendar startDate, Calendar endDate) throws AccessDeniedException {
+		if (m.getLogin().equals(m.getAdmin())){
+			activityList.add(new Activity(m, this, title, expectedWorkHours, startDate, endDate));
+			return activityList.get(activityList.size()-1);
+		} else if (!isProjectLeader()){
+			throw new AccessDeniedException("You are not the leader of this project");
+		} else {
+			activityList.add(new Activity(m, this, title, expectedWorkHours, startDate, endDate));
+			return activityList.get(activityList.size()-1);
+		}
+	}
+
+	private boolean isProjectLeader() {
+		return m.getLogin().equals(getProjectLeader());
 	}
 	
 	public List<Activity> getActivities() {
