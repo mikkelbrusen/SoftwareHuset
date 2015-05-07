@@ -44,6 +44,23 @@ public class TestProject extends SampleDataSetup{
 	}
 	
 	@Test
+	public void testCreateExistingActivity() throws AccessDeniedException, ActivityStaffException {
+		int activitySize = p.getActivities().size();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		try {
+			p.createActivity("activity", 10, start, end);
+			fail("Activity should not be created");
+		} catch (AccessDeniedException e) {
+			assertEquals("The activity already exists", e.getMessage());
+		}
+		
+		assertEquals(activitySize, p.getActivities().size());
+	}
+	
+	@Test
 	public void testBecomeProjectLeader() throws Exception {
 		Activity a = p.createActivity("activity", 10, start, end);
 		Developer d = m.createDev();
