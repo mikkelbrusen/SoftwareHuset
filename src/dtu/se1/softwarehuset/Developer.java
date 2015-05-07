@@ -51,5 +51,13 @@ public class Developer {
 	public Map<Activity, Developer> getRequests() {
 		return requests;
 	}
+	
+	public void acceptRequest(Activity a, boolean b) {
+		requests.remove(a);
+
+		if (b) {
+			a.addStaffRequest(this);
+		}
+	}
 
 }

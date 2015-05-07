@@ -110,6 +110,10 @@ public class Activity {
 			d.registerActivity(this);
 		}
 	}
+	
+	protected void addStaffRequest(Developer d) {
+		staff.add(d);
+	}
 
 	private boolean alreadyAssigned(Developer d) {
 		return staff.contains(d);
