@@ -50,7 +50,7 @@ public class TestMaster{
 	public void testCreateDeveloper() throws AccessDeniedException {
 		Master m = new Master();
 		m.login(m.getAdmin());
-		Developer d = m.createDev();
+		m.createDev();
 		
 		assertEquals(1, m.getDevs().size());
 		assertEquals(m.getDevById(23), null);
@@ -60,7 +60,7 @@ public class TestMaster{
 	public void testCreateDeveloperNoLogin() throws AccessDeniedException {
 		Master m = new Master();
 		try {
-			Developer d = m.createDev();
+			m.createDev();
 			fail("Developer should not have been created!");
 		} catch (AccessDeniedException e) {
 			assertEquals("You are not an administrator", e.getMessage());
