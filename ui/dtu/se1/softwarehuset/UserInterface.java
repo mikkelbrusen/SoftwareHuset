@@ -60,8 +60,9 @@ public class UserInterface {
 		System.out.println("Access projects - 1");
 		System.out.println("Create project (Admin only) - 2");
 		System.out.println("Add new developer (Admin only) - 3");
-		System.out.println("Logout - 4");
-		System.out.println("Close application - 5");
+		System.out.println("Personal menu - 4");
+		System.out.println("Logout - 5");
+		System.out.println("Close application - 6");
 		System.out.println("-----");
 		int choice = userInputInt();
 		switch (choice) {
@@ -75,11 +76,14 @@ public class UserInterface {
 			addDeveloper();
 			break;
 		case (4):
+			personalMenu();
+			break;
+		case (5):
 			m.logout();
 			login();
 			mainMenu();
 			break;
-		case (5):
+		case (6):
 			closeApp();
 			break;
 		default:
@@ -335,10 +339,11 @@ public class UserInterface {
 
 	private void listStaff(Activity a) {
 
-		System.out.println("Developers assigned to activity \""+a.getTitle()+"\":");
+		System.out.println("Developers assigned to activity \"" + a.getTitle()
+				+ "\":");
 		System.out.println("---");
-		for (Developer d: a.getStaff()) {
-			System.out.println("Developer id: "+d.getId());
+		for (Developer d : a.getStaff()) {
+			System.out.println("Developer id: " + d.getId());
 		}
 		System.out.println("---");
 		manageActivity(a);
@@ -360,7 +365,7 @@ public class UserInterface {
 		System.out.println("Choose developer by id");
 		Developer d = m.getDevById(userInputInt());
 
-		if (d==null) {
+		if (d == null) {
 			System.out.println("Invalid developer id\nReturning to main menu");
 			mainMenu();
 		}
@@ -369,17 +374,17 @@ public class UserInterface {
 					+ " or already assigned to this activity\nTry again:");
 			d = m.getDevById(userInputInt());
 		}
-		
+
 		try {
 			a.addStaff(d);
-			System.out.println("Successfully added developer with id \""+d.getId()+"\""
-					+ " to activity \""+a.getTitle()+"\"");
+			System.out.println("Successfully added developer with id \""
+					+ d.getId() + "\"" + " to activity \"" + a.getTitle()
+					+ "\"");
 		} catch (ActivityStaffException e) {
 			e.printStackTrace();
 		}
-		
+
 		manageActivity(a);
-		
 
 	}
 
@@ -399,13 +404,96 @@ public class UserInterface {
 		System.out.println("How many hours do you wish to regiser?");
 		int hours = userInputInt();
 
-		a.registerHours(m.getLogin(), hours);
+		try {
+			a.registerHours(m.getLogin(), hours);
+		} catch (AccessDeniedException e) {
+			e.printStackTrace();
+		}
 		System.out
 				.println("Total number of hours on activity \"" + a.getTitle()
 						+ "\": " + a.getDevRegisteredHours(m.getLogin()));
-		
+
 		manageActivity(a);
 
+	}
+
+	private void personalMenu() {
+		Developer d = m.getLogin();
+
+		System.out.println("Menu for developer with id \"" + d.getId()
+				+ "\"\nOptions:");
+		System.out.println("See registered hours - 1");
+		System.out.println("See availablity status - 2");
+		System.out.println("Change availability - 3");
+		System.out.println("Main menu - 4");
+
+		int choice = userInputInt();
+		switch (choice) {
+		case (1):
+			devRegisteredHours(d);
+			break;
+		case (2):
+			devAvail(d);
+			break;
+		case (3):
+			changeAvail(d);
+			break;
+		case (4):
+		default:
+			System.out.println("Returning to main menu..");
+			mainMenu();
+		}
+
+	}
+
+	private void changeAvail(Developer d) {
+		System.out.println("Choose new status:");
+		System.out.println("Available - 1");
+		System.out.println("Unavailable - 2");
+		
+		int choice = userInputInt();
+		switch (choice) {
+		case(1):
+			devSetAvail(d, true);
+			break;
+		case(2):
+			devSetAvail(d, false);
+			break;
+		default:
+			System.out.println("Invalid input. Try again:");
+			changeAvail(d);
+		}
+		
+	}
+
+	private void devSetAvail(Developer d, boolean b) {
+		String status = (b) ? "Available": "Unavailable";
+		if (d.isAvailable() == b) {
+			System.out.println("Status is already set to "+status);
+			personalMenu();
+		}
+		
+		d.setAvailable(b);
+		System.out.println("Successfully set status to: "+status);
+		personalMenu();
+		
+	}
+
+	private void devAvail(Developer d) {
+		System.out.print("Status for developer with id \""+d.getId()+"\": ");
+		
+		String status = (d.isAvailable()) ? "Available": "Unavailable";
+		
+		System.out.print(status+" \n");
+		personalMenu();
+	}
+
+	private void devRegisteredHours(Developer d) {
+		System.out.println("Total number of registered hours for developer\n"
+				+ "with id \"" + d.getId() + "\"");
+
+		System.out.println("Hours: " + d.getRegisteredHours());
+		personalMenu();
 	}
 
 	private void closeApp() {
