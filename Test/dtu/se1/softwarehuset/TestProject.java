@@ -27,6 +27,7 @@ public class TestProject extends SampleDataSetup{
 		assertEquals(10, a.getExpectedWorkHours());
 		assertEquals(start, a.getStartDate());
 		assertEquals(end, a.getEndDate());
+		assertEquals(p, a.getProject());
 		
 	}
 	
@@ -76,6 +77,23 @@ public class TestProject extends SampleDataSetup{
 			fail("The activity should not be created");
 		} catch (InvalidParameterException e) {
 			assertEquals("The activity must have a non-empty name", e.getMessage());
+		}
+		
+		assertEquals(activitySize, p.getActivities().size());
+	}
+	
+	@Test
+	public void testCreateActivityNegativeWorkHours() throws Exception {
+		int activitySize = p.getActivities().size();
+		Developer pl = m.createDev();
+		m.logout();
+		m.login(pl);
+		p.becomeProjectLeader();
+		try {
+			p.createActivity("activity", -1, start, end);
+			fail("The activity should not be created");
+		} catch (InvalidParameterException e) {
+			assertEquals("Expexted work hours must be non-negative", e.getMessage());
 		}
 		
 		assertEquals(activitySize, p.getActivities().size());

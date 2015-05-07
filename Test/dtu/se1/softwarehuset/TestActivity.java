@@ -67,10 +67,13 @@ public class TestActivity extends SampleDataSetup {
 		Developer d1 = m.createDev();
 		Developer d2 = m.createDev();
 		m.logout();
+		m.login(d2);
+		d2.setAvailable(false);
+		
+		m.logout();
 		m.login(d1);
 		p.becomeProjectLeader();
 
-		d2.setAvailable(false);
 		try {
 			a.addStaff(d2);
 			fail("The activity should not be added");
@@ -153,13 +156,14 @@ public class TestActivity extends SampleDataSetup {
 		Developer d1 = m.createDev();
 		Developer d2 = m.createDev();
 		Developer d3 = m.createDev();
+		m.logout();
+		m.login(d3);
+		d3.setAvailable(false);
 
 		m.logout();
 		m.login(d1);
 		p.becomeProjectLeader();
 		a.addStaff(d2);
-
-		d3.setAvailable(false);
 		
 		m.logout();
 		m.login(d2);

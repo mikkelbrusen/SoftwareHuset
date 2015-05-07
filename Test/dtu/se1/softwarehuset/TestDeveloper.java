@@ -104,6 +104,61 @@ public class TestDeveloper  extends SampleDataSetup{
 		
 		d3.acceptRequest(a, true);
 		assertEquals(true, a.getStaff().contains(d3));
+		assertEquals(0, d3.getRequests().size());
+	}
+	
+	@Test
+	public void testDeclineRequest() throws Exception{
+		Developer d1 = m.createDev();
+		Developer d2 = m.createDev();
+		Developer d3 = m.createDev();
+
+		m.logout();
+		m.login(d1);
+		p.becomeProjectLeader();
+		a.addStaff(d2);
+		
+		m.logout();
+		m.login(d2);
+		try {
+			a.requestAssistance(d3);
+		} catch (Exception e) {
+			fail("Request should have been created");
+		}
+		
+		d3.acceptRequest(a, false);
+		assertEquals(false, a.getStaff().contains(d3));
+		assertEquals(0, d3.getRequests().size());
+	}
+
+	@Test
+	public void testChangeAvailableStatus() throws AccessDeniedException {
+		Developer d = m.createDev();
+		
+		assertEquals(true, d.isAvailable());
+		
+		m.logout();
+		m.login(d);
+		d.setAvailable(false);
+		
+		assertEquals(false, d.isAvailable());
+	}
+	
+	@Test
+	public void testChangeAvailableStatusNoLogin() throws AccessDeniedException {
+		Developer d = m.createDev();
+		
+		assertEquals(true, d.isAvailable());
+		
+		m.logout();
+		try {
+			d.setAvailable(false);
+			fail("Available status should not have been changed");
+		} catch (AccessDeniedException e) {
+			assertEquals("Must be logged in to change available status", e.getMessage());
+		}
+		
+		assertEquals(true, d.isAvailable());
 	}
 
 }
