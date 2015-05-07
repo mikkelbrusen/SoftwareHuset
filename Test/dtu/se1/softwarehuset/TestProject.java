@@ -3,13 +3,15 @@ package dtu.se1.softwarehuset;
 import static org.junit.Assert.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
 public class TestProject extends SampleDataSetup{
 	
 	@Test
-	public void testCreateActivity() throws AccessDeniedException, ActivityStaffException {
+	public void testCreateActivity() throws AccessDeniedException, ActivityStaffException, AlreadyExistingException {
 		int activitySize = p.getActivities().size();
 		Developer pl = m.createDev();
 		m.logout();
@@ -28,7 +30,7 @@ public class TestProject extends SampleDataSetup{
 	}
 	
 	@Test
-	public void testCreateActivityNotProjectLeader() throws AccessDeniedException, ActivityStaffException {
+	public void testCreateActivityNotProjectLeader() throws AccessDeniedException, ActivityStaffException, AlreadyExistingException {
 		int activitySize = p.getActivities().size();
 		Developer pl = m.createDev();
 		m.logout();
@@ -44,16 +46,17 @@ public class TestProject extends SampleDataSetup{
 	}
 	
 	@Test
-	public void testCreateExistingActivity() throws AccessDeniedException, ActivityStaffException {
+	public void testCreateExistingActivity() throws AccessDeniedException, ActivityStaffException, AlreadyExistingException {
 		int activitySize = p.getActivities().size();
 		Developer pl = m.createDev();
 		m.logout();
 		m.login(pl);
 		p.becomeProjectLeader();
+		p.createActivity("activity", 10, start, end);
 		try {
-			p.createActivity("activity", 10, start, end);
+			p.createActivity("activity", 10, new GregorianCalendar(2015, Calendar.JANUARY, 11), new GregorianCalendar(2015, Calendar.JANUARY, 20));
 			fail("Activity should not be created");
-		} catch (AccessDeniedException e) {
+		} catch (AlreadyExistingException e) {
 			assertEquals("The activity already exists", e.getMessage());
 		}
 		
