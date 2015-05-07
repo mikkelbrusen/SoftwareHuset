@@ -1,5 +1,6 @@
 package dtu.se1.softwarehuset;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,10 +27,17 @@ public class Developer {
 		return available && activityList.size() < 10;
 	}
 	
-	public void setAvailable(boolean bool) {
+	public void setAvailable(boolean bool) throws AccessDeniedException {
+		if (!isLoggedIn())
+			throw new AccessDeniedException("Must be logged in to change available status");
+		
 		available = bool;
 	}
 	
+	private boolean isLoggedIn() {
+		return id == m.getLoginId();
+	}
+
 	public int getRegisteredHours() {
 		int hours = 0;
 		for (Activity a: activityList) {
