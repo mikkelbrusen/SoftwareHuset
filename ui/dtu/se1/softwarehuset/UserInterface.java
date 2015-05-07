@@ -139,7 +139,7 @@ public class UserInterface {
 			System.out.println("Created project \"" + p.getTitle()
 					+ "\", with id " + p.getId());
 			System.out.println("and start date at: " + dateString);
-		} catch (AccessDeniedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -275,7 +275,7 @@ public class UserInterface {
 			System.out.println("---");
 
 			manageActivity(a);
-		} catch (AccessDeniedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
