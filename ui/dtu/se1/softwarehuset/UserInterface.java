@@ -22,6 +22,10 @@ public class UserInterface {
 	}
 
 	public UserInterface() {
+		System.out.println("Softwarehuset project management system");
+		System.out
+				.println("At any point in the program, type \"exit\" to close the application");
+
 		m = new Master();
 		login();
 		mainMenu();
@@ -29,7 +33,6 @@ public class UserInterface {
 	}
 
 	private void login() {
-		System.out.println("To close the program, enter id \"-1\"");
 		System.out.println("Enter your ID:");
 		Developer loginDev;
 		int id = userInputInt();
@@ -41,9 +44,6 @@ public class UserInterface {
 		}
 
 		while (loginDev == null) {
-			if (id == -1) {
-				closeApp();
-			}
 			System.out.println("User does not exist.\nEnter another ID");
 			id = userInputInt();
 
@@ -96,10 +96,8 @@ public class UserInterface {
 	}
 
 	private void addDeveloper() {
-
 		if (!m.getLogin().equals(m.getAdmin())) {
-			System.out
-					.println("Access denied!\nOnly admin is allowed to add users");
+			System.out.println("Access denied!\n" + "Returning to main menu");
 			mainMenu();
 		}
 
@@ -119,7 +117,7 @@ public class UserInterface {
 		Developer user = m.getLogin();
 
 		if (user != m.getAdmin()) {
-			System.out.println("Access denied!\nReturning to main menu");
+			System.out.println("Access denied!\n" + "Returning to main menu");
 			mainMenu();
 		}
 
@@ -194,11 +192,13 @@ public class UserInterface {
 
 		System.out.println("Accessing Project \"" + p.getTitle() + "\"..");
 
-		System.out.println("Options:");
+		System.out.println("Options:\n");
+		System.out.println("---");
 		System.out.println("Create activity - 1");
 		System.out.println("Manage activities - 2");
 		System.out.println("Become project leader - 3");
 		System.out.println("Return to main menu - 4");
+		System.out.println("---");
 
 		int choice = userInputInt();
 		switch (choice) {
@@ -242,8 +242,8 @@ public class UserInterface {
 	private void createActivity(Project p) {
 
 		if (m.getLogin() != p.getProjectLeader()) {
-			System.out
-					.println("Access denied!\nOnly the project leader may create activities!");
+			System.out.println("Access denied!\n"
+					+ "Only the project leader may create activities!");
 			System.out.println("Returning to main menu");
 			mainMenu();
 		}
@@ -303,7 +303,8 @@ public class UserInterface {
 
 		Activity a = p.getActivityById(activityId);
 		while (!p.getActivities().contains(a)) {
-			System.out.println("Activity does not exist\nTry again");
+			System.out.println("Activity does not exist\n"
+					+ "Try again");
 			a = p.getActivityById(userInputInt());
 		}
 
@@ -314,13 +315,15 @@ public class UserInterface {
 	private void manageActivity(Activity a) {
 		System.out.println("Managing activity \"" + a.getTitle() + "\":");
 
+		System.out.println("---");
 		System.out.println("Options:");
 		System.out.println("Register hours - 1");
 		System.out.println("List staff - 2");
 		System.out.println("Add staff (Project leader only) - 3");
 		System.out.println("Request assistance (Staff only) - 4");
 		System.out.println("Return to main menu - 5");
-
+		System.out.println("---");
+		
 		int choice = userInputInt();
 		switch (choice) {
 		case (1):
@@ -333,7 +336,7 @@ public class UserInterface {
 			addStaff(a);
 			break;
 		case (4):
-			 requestAssistance(a);
+			requestAssistance(a);
 			break;
 		case (5):
 			mainMenu();
@@ -347,46 +350,59 @@ public class UserInterface {
 
 	private void requestAssistance(Activity a) {
 		Developer dev = m.getLogin();
-		
+
 		if (!a.getStaff().contains(dev)) {
 			System.out.println("You are not assigned to this activity");
 			manageActivity(a);
 		}
-		
+
 		System.out.println("Requesting assistance");
-		System.out.println("Developer list\n---");
-		
-		for (Developer d: m.getDevs()) {
-			System.out.println("Developer id: "+d.getId());
+		System.out.println("Developer list");
+		System.out.println("---");
+
+		for (Developer d : m.getDevs()) {
+			System.out.println("Developer id: " + d.getId());
 		}
 		System.out.println("---");
-		
+
 		System.out.println("Enter \"-1\" to return to main menu.");
 		System.out.println("Choose a developer by ID to assist you:");
-		
+
 		int choice = userInputInt();
-		
+
 		if (choice == -1) {
 			mainMenu();
 		}
-		
-		
+
 		try {
 			Developer reqDev = m.getDevById(choice);
+			
+			if (reqDev.equals(dev)) {
+				System.out.println("You can't request assistance from yourself..");
+				manageActivity(a);
+			}
+			
 			a.requestAssistance(reqDev);
-			System.out.println("Successfully requested dev with id \""+reqDev.getId()+"\" to assist you!");
+			System.out.println("Successfully requested dev with id \""
+					+ reqDev.getId() + "\" to assist you!");
 			manageActivity(a);
 		} catch (ActivityStaffException e) {
-			System.out.println("Error\n"+e.getMessage());
+			System.out.println("Error\n" + e.getMessage());
 			requestAssistance(a);
 		}
-		
+
 	}
 
 	private void listStaff(Activity a) {
 
 		System.out.println("Developers assigned to activity \"" + a.getTitle()
 				+ "\":");
+
+		if (a.getStaff().size() == 0) {
+			System.out.println("No developers assigened to this activity");
+			manageActivity(a);
+		}
+
 		System.out.println("---");
 		for (Developer d : a.getStaff()) {
 			System.out.println("Developer id: " + d.getId());
@@ -497,51 +513,50 @@ public class UserInterface {
 	}
 
 	private void manageRequests(Developer d) {
-		
+
 		if (d.getRequests().size() == 0) {
 			System.out.println("There are no pending requests.");
 			personalMenu();
 		}
-		
+
 		System.out.println("List of pending requests\n---");
 		Map<Activity, Developer> requests = d.getRequests();
-		
+
 		List<Activity> activityList = new ArrayList<Activity>();
-		
-		for (Map.Entry<Activity, Developer> entry: requests.entrySet()) {
+
+		for (Map.Entry<Activity, Developer> entry : requests.entrySet()) {
 			Activity a = entry.getKey();
 			Developer rDev = entry.getValue();
 			activityList.add(a);
-			System.out.println("\""+a.getTitle()+"\" helping developer \""+rDev.getId()+"\". ID: "+a.getId());
+			System.out.println("\"" + a.getTitle() + "\" helping developer \""
+					+ rDev.getId() + "\". ID: " + a.getId());
 		}
-		
+
 		System.out.println("---\nChoose a request:");
-		
+
 		int choice = userInputInt();
 		Activity a = ArrayListGetById(activityList, choice);
 
-		
 		while (a == null) {
 			System.out.println("Activity is not available. Try again:");
 			a = ArrayListGetById(activityList, userInputInt());
 		}
-		
-		
-		System.out.println("\""+a.getTitle()+"\"");
+
+		System.out.println("\"" + a.getTitle() + "\"");
 		System.out.println("Do you wish to accept or decline the request?");
 		System.out.println("Accept - 1\nDecline - 2");
-		
+
 		choice = userInputInt();
-		
+
 		m.getLogin().acceptRequest(a, choice == 1);
-		
+
 		System.out.println("Successfully accepted the request!");
 		personalMenu();
-		
+
 	}
-	
+
 	private Activity ArrayListGetById(List<Activity> arr, int id) {
-		for (Activity a: arr) {
+		for (Activity a : arr) {
 			if (a.getId() == id) {
 				return a;
 			}
@@ -553,41 +568,42 @@ public class UserInterface {
 		System.out.println("Choose new status:");
 		System.out.println("Available - 1");
 		System.out.println("Unavailable - 2");
-		
+
 		int choice = userInputInt();
 		switch (choice) {
-		case(1):
+		case (1):
 			devSetAvail(d, true);
 			break;
-		case(2):
+		case (2):
 			devSetAvail(d, false);
 			break;
 		default:
 			System.out.println("Invalid input. Try again:");
 			changeAvail(d);
 		}
-		
+
 	}
 
 	private void devSetAvail(Developer d, boolean b) {
-		String status = (b) ? "Available": "Unavailable";
-		
+		String status = (b) ? "Available" : "Unavailable";
+
 		try {
 			d.setAvailable(b);
 		} catch (AccessDeniedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Successfully set status to: "+status);
+		System.out.println("Successfully set status to: " + status);
 		personalMenu();
-		
+
 	}
 
 	private void devAvail(Developer d) {
-		System.out.print("Status for developer with id \""+d.getId()+"\": ");
-		
-		String status = (d.isAvailable()) ? "Available": "Unavailable";
-		
-		System.out.print(status+" \n");
+		System.out
+				.print("Status for developer with id \"" + d.getId() + "\": ");
+
+		String status = (d.isAvailable()) ? "Available" : "Unavailable";
+
+		System.out.print(status + " \n");
 		personalMenu();
 	}
 
@@ -605,8 +621,7 @@ public class UserInterface {
 	}
 
 	private int userInputInt() {
-		sc = new Scanner(System.in);
-		String inp = sc.nextLine();
+		String inp = userInputString(null);
 		int ret;
 		try {
 			ret = Integer.parseInt(inp);
@@ -621,6 +636,12 @@ public class UserInterface {
 	private String userInputString(String regex) {
 		sc = new Scanner(System.in);
 		String str = sc.nextLine();
+
+		if (str.equals("exit")) {
+			System.out.println("Closing application..");
+			System.exit(0);
+		}
+
 		if (regex == null)
 			return str;
 
