@@ -226,8 +226,10 @@ public class UserInterface {
 		if (p.getProjectLeader() != null) {
 			System.out.println("A project leader is already assigned");
 			manageProject(p);
-		} else if(!m.getDevById(m.getLoginId()).isAvailable()){
-			System.out.println("Developer is unavailable");
+		}
+		
+		if(!userIsAvailable()){
+			System.out.println("You can not become project leader while unavailable");
 			manageProject(p);
 		}
 
@@ -240,6 +242,10 @@ public class UserInterface {
 			e.printStackTrace();
 		}
 
+	}
+
+	private boolean userIsAvailable() {
+		return m.getLogin().isAvailable();
 	}
 
 	private void createActivity(Project p) {
