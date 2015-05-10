@@ -111,6 +111,22 @@ public class TestProject extends SampleDataSetup{
 	}
 	
 	@Test
+	public void testBecomeProjectLeaderDevUnavailable() throws Exception {
+		p.createActivity("activity", 10, start, end);
+		Developer d = m.createDev();
+		m.logout();
+		m.login(d);
+		d.setAvailable(false);
+		
+		try {
+			p.becomeProjectLeader();
+			fail("Should not have become project leader as the developer is unavailable");
+		} catch(ActivityStaffException e) {
+			assertEquals("Developer is unavailable", e.getMessage());
+		}
+	}
+	
+	@Test
 	public void testBecomeProjectLeaderAlreadyAssigned() throws Exception {
 		p.createActivity("activity", 10, start, end);
 		Developer d1 = m.createDev();

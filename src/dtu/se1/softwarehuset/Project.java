@@ -93,6 +93,9 @@ public class Project {
 		if (pLeader.getStaff().size() != 0){
 			throw new ActivityStaffException("Project leader is already assigned");
 		}
+		if(!m.getDevById(m.getLoginId()).isAvailable()){
+			throw new ActivityStaffException("Developer is unavailable");
+		}
 		pLeader.addStaff(m.getDevById(m.getLoginId()));
 	}
 

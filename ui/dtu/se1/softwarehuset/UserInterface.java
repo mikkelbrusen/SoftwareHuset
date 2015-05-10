@@ -226,6 +226,9 @@ public class UserInterface {
 		if (p.getProjectLeader() != null) {
 			System.out.println("A project leader is already assigned");
 			manageProject(p);
+		} else if(!m.getDevById(m.getLoginId()).isAvailable()){
+			System.out.println("Developer is unavailable");
+			manageProject(p);
 		}
 
 		try {
