@@ -22,10 +22,11 @@ public class UserInterface {
 	}
 
 	public UserInterface() {
+		System.out.println("---");
 		System.out.println("Softwarehuset project management system");
 		System.out
 				.println("At any point in the program, type \"exit\" to close the application");
-
+		System.out.println("---");
 		m = new Master();
 		login();
 		mainMenu();
@@ -58,7 +59,7 @@ public class UserInterface {
 	}
 
 	private void mainMenu() {
-		System.out.println("-----");
+		System.out.println("---");
 		System.out.println("Main Menu");
 		System.out.println("Access projects - 1");
 		System.out.println("Create project (Admin only) - 2");
@@ -66,7 +67,7 @@ public class UserInterface {
 		System.out.println("Personal menu - 4");
 		System.out.println("Logout - 5");
 		System.out.println("Close application - 6");
-		System.out.println("-----");
+		System.out.println("---");
 		int choice = userInputInt();
 		switch (choice) {
 		case (1):
@@ -165,11 +166,11 @@ public class UserInterface {
 			mainMenu();
 			return;
 		}
-		System.out.println("--");
+		System.out.println("---");
 		for (Project p : m.getProjects()) {
 			System.out.println("\"" + p.getTitle() + "\" - Id: " + p.getId());
 		}
-		System.out.println("--");
+		System.out.println("---");
 
 		System.out.println("Enter \"0\" to return to main menu");
 		System.out.println("Enter project ID, to manage project");
@@ -192,7 +193,7 @@ public class UserInterface {
 
 		System.out.println("Accessing Project \"" + p.getTitle() + "\"..");
 
-		System.out.println("Options:\n");
+		System.out.println("Options:");
 		System.out.println("---");
 		System.out.println("Create activity - 1");
 		System.out.println("Manage activities - 2");
@@ -227,9 +228,10 @@ public class UserInterface {
 			System.out.println("A project leader is already assigned");
 			manageProject(p);
 		}
-		
-		if(!userIsAvailable()){
-			System.out.println("You can not become project leader while unavailable");
+
+		if (!userIsAvailable()) {
+			System.out.println("You can not become project leader"
+					+ " while unavailable");
 			manageProject(p);
 		}
 
@@ -312,8 +314,7 @@ public class UserInterface {
 
 		Activity a = p.getActivityById(activityId);
 		while (!p.getActivities().contains(a)) {
-			System.out.println("Activity does not exist\n"
-					+ "Try again");
+			System.out.println("Activity does not exist\n" + "Try again");
 			a = p.getActivityById(userInputInt());
 		}
 
@@ -332,7 +333,7 @@ public class UserInterface {
 		System.out.println("Request assistance (Staff only) - 4");
 		System.out.println("Return to main menu - 5");
 		System.out.println("---");
-		
+
 		int choice = userInputInt();
 		switch (choice) {
 		case (1):
@@ -385,14 +386,15 @@ public class UserInterface {
 
 		try {
 			Developer reqDev = m.getDevById(choice);
-			
+
 			if (reqDev.equals(dev)) {
-				System.out.println("You can't request assistance from yourself..");
+				System.out
+						.println("You can't request assistance from yourself..");
 				manageActivity(a);
 			}
-			
+
 			a.requestAssistance(reqDev);
-			System.out.println("Successfully requested dev with id \""
+			System.out.println("Successfully requested developer with id \""
 					+ reqDev.getId() + "\" to assist you!");
 			manageActivity(a);
 		} catch (ActivityStaffException e) {
