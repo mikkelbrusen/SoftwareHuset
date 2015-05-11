@@ -142,7 +142,8 @@ public class UserInterface {
 					+ "\", with id " + p.getId());
 			System.out.println("and start date at: " + dateString);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Error..");
+			System.out.println(e.getMessage());
 		}
 
 		mainMenu();
@@ -223,6 +224,11 @@ public class UserInterface {
 	}
 
 	private void becomeProjectLeader(Project p) {
+		
+		if (m.getLogin() ==  m.getAdmin()) {
+			System.out.println("The Administrator can not become project leader");
+			manageProject(p);
+		}
 
 		if (p.getProjectLeader() != null) {
 			System.out.println("A project leader is already assigned");
@@ -290,19 +296,22 @@ public class UserInterface {
 
 			manageActivity(a);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Error..");
+			System.out.println(e.getMessage());
+			manageProject(p);
 		}
+		
 	}
 
 	private void accessActivities(Project p) {
 
 		System.out.println("Available activities:");
-		System.out.println("--");
+		System.out.println("---");
 
 		for (Activity a : p.getActivities()) {
 			System.out.println("\"" + a.getTitle() + "\" - Id: " + a.getId());
 		}
-		System.out.println("--");
+		System.out.println("---");
 
 		System.out.println("Enter \"0\" to return to main menu");
 		System.out.println("Enter activity ID, to manage project");
