@@ -96,7 +96,8 @@ public class Project {
 		if(!m.getDevById(m.getLoginId()).isAvailable()){
 			throw new ActivityStaffException("Developer is unavailable");
 		}
-		pLeader.addStaff(m.getDevById(m.getLoginId()));
+		pLeader.addStaff(m.getLogin());
+		m.getLogin().registerActivity(pLeader);
 	}
 
 	public int getId() {
